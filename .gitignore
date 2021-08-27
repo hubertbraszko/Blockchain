@@ -1,0 +1,12 @@
+Topics/
+/.gradle/
+course-info.yaml
+course-remote-info.yaml
+/Blockchain/*
+!/Blockchain/task
+/Blockchain/task/*
+!/Blockchain/task/src
+!/Blockchain/task/resources
+!/Blockchain/task/build.gradle
+/.idea/
+
