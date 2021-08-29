@@ -1,6 +1,8 @@
 package blockchain;
 
 import java.util.Date;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Block {
 
@@ -9,13 +11,23 @@ public class Block {
     private String hashOfPrevious;
     private String hash;
     private static int numOfBlocks;
+    private long magicNumber = ThreadLocalRandom.current().nextLong(Long.MAX_VALUE);
+    private long generationTime;
 
-    Block(String hashOfPrevious) {
+
+    Block(String hashOfPrevious,int numOfZeros) {
 
         this.id = ++numOfBlocks;
         this.timestamp = new Date().getTime();
         this.hashOfPrevious = hashOfPrevious;
         this.hash = StrUtil.applySha256(getStringToHash());
+
+        while(!hasNumOfZeros(numOfZeros)) {
+            magicNumber = ThreadLocalRandom.current().nextLong(Long.MAX_VALUE);
+            this.hash = StrUtil.applySha256(getStringToHash());
+        }
+
+        generationTime = new Date().getTime() - timestamp;
 
     }
 
@@ -42,7 +54,9 @@ public class Block {
     private String getStringToHash(){
         String ret = String.valueOf(id)
                 + String.valueOf(timestamp)
+                + String.valueOf(magicNumber)
                 + hashOfPrevious;
+
         return ret;
     }
 
@@ -51,9 +65,18 @@ public class Block {
         String block = "Block:" + "\n"
                 + "Id: " + String.valueOf(id) + "\n"
                 + "Timestamp: " + timestamp + "\n"
+                + "Magic number: " + magicNumber + "\n"
                 + "Hash of the previous block: " + "\n" + hashOfPrevious + "\n"
-                + "Hash of the block: " + "\n" + hash + "\n";
+                + "Hash of the block: " + "\n" + hash + "\n"
+                + "Block was generating for " + generationTime/1000 +  " seconds" + "\n";
         return block;
+    }
+
+    private boolean hasNumOfZeros(int numOfZeros) {
+        for (int i = 0 ; i < numOfZeros ; i++) {
+            if(this.hash.charAt(i) != '0') {return false;}
+        }
+        return true;
     }
 
 }
