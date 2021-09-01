@@ -8,7 +8,8 @@ public class Main {
         Blockchain blockchain = new Blockchain();
 
         for (int i = 0;i<5;i++) {
-            blockchain.addBlock(numOfZeros);
+
+            blockchain.addBlock(BlockFactory.newBlock(blockchain.getLatestBlockHash(), numOfZeros));
         }
 
         blockchain.printBlockchain();

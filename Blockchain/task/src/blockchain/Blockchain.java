@@ -10,17 +10,27 @@ public class Blockchain {
 
 
 
-    public void addBlock(int numOfZeros) {
-        if( chain.size() == 0) {
-            chain.add(new Block("0",numOfZeros));
-        } else {
-            String hashOfPrevious = chain.get(chain.size()-1).getHash();
-            chain.add(new Block(hashOfPrevious,numOfZeros));
+    public boolean addBlock(Block block) {
+        if(validateNewBlock(block)) {
+            chain.add(block);
+            return true;
         }
+        return false;
     }
 
-    public void validate() {
+    private boolean validateNewBlock(Block block) {
         //TODO
+        if(getLatestBlockHash().equals(block.getHashOfPrevious())) {
+            return true;
+        }
+        return false;
+
+    }
+
+    public String getLatestBlockHash() {
+        if(chain.isEmpty()) {return "0";}
+        return chain.get(chain.size() - 1).getHash();
+
     }
 
     public void printBlockchain() {
