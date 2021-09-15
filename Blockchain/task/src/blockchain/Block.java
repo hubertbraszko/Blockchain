@@ -13,9 +13,11 @@ public class Block {
     private static int numOfBlocks;
     private long magicNumber = ThreadLocalRandom.current().nextLong(Long.MAX_VALUE);
     private long generationTime;
+    private long minerId;
+    private String numOfZerosMessage;
 
 
-    Block(String hashOfPrevious,int numOfZeros) {
+    Block(String hashOfPrevious,int numOfZeros, long minerId) {
 
         this.id = ++numOfBlocks;
         this.timestamp = new Date().getTime();
@@ -63,12 +65,14 @@ public class Block {
     @Override
     public String toString() {
         String block = "Block:" + "\n"
+                + "Created by miner # " + minerId + "\n"
                 + "Id: " + String.valueOf(id) + "\n"
                 + "Timestamp: " + timestamp + "\n"
                 + "Magic number: " + magicNumber + "\n"
                 + "Hash of the previous block: " + "\n" + hashOfPrevious + "\n"
                 + "Hash of the block: " + "\n" + hash + "\n"
-                + "Block was generating for " + generationTime/1000 +  " seconds" + "\n";
+                + "Block was generating for " + generationTime/1000 +  " seconds" + "\n"
+                + numOfZerosMessage + "\n";
         return block;
     }
 
@@ -79,4 +83,8 @@ public class Block {
         return true;
     }
 
+
+    public void setNumOfZerosMessage(String numOfZerosMessage) {
+        this.numOfZerosMessage = numOfZerosMessage;
+    }
 }
